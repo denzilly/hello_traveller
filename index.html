@@ -10,15 +10,15 @@
     :root {
       --red:    #CC0000;
       --green:  #006600;
-      --white:  #ffffff;
-      --bg:     #f7f6f2;
-      --card:   #ffffff;
-      --text:   #1a1a1a;
-      --muted:  #666;
-      --border: #e0ddd6;
-      --accent: #CC0000;
-      --correct: #18a558;
-      --wrong:   #d93025;
+      --bg:     #0f1117;
+      --card:   #1a1d27;
+      --card2:  #22263a;
+      --text:   #e8e8ec;
+      --muted:  #7a7f99;
+      --border: #2c3050;
+      --accent: #e03030;
+      --correct: #22c55e;
+      --wrong:   #ef4444;
       --radius:  12px;
     }
 
@@ -43,7 +43,7 @@
     /* ── Nav tabs ── */
     nav {
       display: flex;
-      background: white;
+      background: var(--card);
       border-bottom: 2px solid var(--border);
       position: sticky;
       top: 0;
@@ -80,19 +80,18 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.1rem 1.25rem;
-      display: grid;
-      grid-template-columns: 2.5rem 1fr;
-      gap: .25rem .75rem;
-      align-items: start;
+      padding: 1.1rem 1.25rem 1rem;
     }
-    .phrase-card .emoji {
-      font-size: 1.6rem;
-      grid-row: 1 / 4;
-      align-self: center;
+    .card-main {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: .6rem;
     }
+    .card-main .emoji { font-size: 1.6rem; flex-shrink: 0; }
+    .card-text { display: flex; flex-direction: column; gap: .1rem; }
     .phrase-card .english {
-      font-size: .8rem;
+      font-size: .78rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .06em;
@@ -111,10 +110,12 @@
     }
     .phrase-card .pronunciation {
       font-size: .78rem;
-      color: #999;
-      margin-top: .1rem;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      padding-top: .55rem;
     }
-    .phrase-card .pronunciation::before { content: '🔉 '; }
+    .phrase-card .pronunciation::before { content: '🔉  '; }
 
     /* ── Quiz ── */
     #quiz-setup { text-align: center; padding-top: 1rem; }
@@ -127,7 +128,7 @@
       margin-bottom: 1.5rem;
     }
     .mode-card {
-      background: white;
+      background: var(--card);
       border: 2px solid var(--border);
       border-radius: var(--radius);
       padding: 1.2rem 1rem;
@@ -135,8 +136,8 @@
       transition: border-color .2s, box-shadow .2s;
       text-align: left;
     }
-    .mode-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(204,0,0,.1); }
-    .mode-card.selected { border-color: var(--accent); background: #fff5f5; }
+    .mode-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(224,48,48,.15); }
+    .mode-card.selected { border-color: var(--accent); background: rgba(224,48,48,.12); }
     .mode-card h3 { font-size: 1rem; margin-bottom: .25rem; }
     .mode-card p  { font-size: .82rem; color: var(--muted); }
 
@@ -154,11 +155,11 @@
     .btn-primary { background: var(--accent); color: white; }
     .btn-primary:hover { opacity: .9; }
     .btn-outline {
-      background: white;
+      background: var(--card);
       color: var(--text);
       border: 2px solid var(--border);
     }
-    .btn-outline:hover { border-color: #aaa; }
+    .btn-outline:hover { border-color: var(--muted); }
 
     /* Quiz active */
     #quiz-active { display: none; }
@@ -187,7 +188,7 @@
 
     /* Flashcard */
     .flashcard {
-      background: white;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
       min-height: 200px;
@@ -204,7 +205,7 @@
       transition: box-shadow .2s;
       user-select: none;
     }
-    .flashcard:hover { box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+    .flashcard:hover { box-shadow: 0 4px 20px rgba(0,0,0,.35); }
     .flashcard .prompt-label {
       font-size: .72rem;
       font-weight: 700;
@@ -222,26 +223,26 @@
       position: absolute;
       bottom: .75rem;
       font-size: .75rem;
-      color: #bbb;
+      color: var(--muted);
     }
     .flashcard .answer { display: none; width: 100%; text-align: center; }
     .flashcard.revealed .reveal-hint { display: none; }
     .flashcard.revealed .answer { display: block; }
     .flashcard .answer .tajik-big { font-size: 1.9rem; font-weight: 700; margin-bottom: .3rem; }
     .flashcard .answer .roman-ans { color: var(--muted); font-style: italic; margin-bottom: .2rem; }
-    .flashcard .answer .pron-ans  { font-size: .78rem; color: #aaa; }
+    .flashcard .answer .pron-ans  { font-size: .78rem; color: var(--muted); }
     .flashcard .answer .divider { border: none; border-top: 1px solid var(--border); margin: .75rem auto; width: 60%; }
 
     .fc-actions { display: none; gap: .75rem; justify-content: center; margin-bottom: 1.5rem; }
     .fc-actions.show { display: flex; }
     .btn-got  { background: var(--correct); color: white; }
     .btn-got:hover { opacity:.9; }
-    .btn-miss { background: white; color: var(--wrong); border: 2px solid var(--wrong); }
-    .btn-miss:hover { background: #fff5f5; }
+    .btn-miss { background: var(--card); color: var(--wrong); border: 2px solid var(--wrong); }
+    .btn-miss:hover { background: rgba(239,68,68,.1); }
 
     /* Multiple choice */
     .mc-question {
-      background: white;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.5rem;
@@ -253,7 +254,7 @@
 
     .mc-options { display: grid; gap: .65rem; margin-bottom: 1.2rem; }
     .mc-option {
-      background: white;
+      background: var(--card);
       border: 2px solid var(--border);
       border-radius: 10px;
       padding: .9rem 1rem;
@@ -263,12 +264,13 @@
       cursor: pointer;
       transition: border-color .15s, background .15s;
       line-height: 1.3;
+      color: var(--text);
     }
-    .mc-option:hover:not(:disabled) { border-color: var(--accent); background: #fff5f5; }
-    .mc-option.correct { border-color: var(--correct); background: #f0fff6; color: var(--correct); }
-    .mc-option.wrong   { border-color: var(--wrong);   background: #fff5f5; color: var(--wrong); }
+    .mc-option:hover:not(:disabled) { border-color: var(--accent); background: rgba(224,48,48,.1); }
+    .mc-option.correct { border-color: var(--correct); background: rgba(34,197,94,.12); color: var(--correct); }
+    .mc-option.wrong   { border-color: var(--wrong);   background: rgba(239,68,68,.12); color: var(--wrong); }
     .mc-option:disabled { cursor: default; }
-    .mc-option .sub { font-size: .75rem; font-weight: 400; color: #aaa; margin-top: .15rem; }
+    .mc-option .sub { font-size: .75rem; font-weight: 400; color: var(--muted); margin-top: .15rem; }
     .mc-option.correct .sub,
     .mc-option.wrong .sub { color: inherit; opacity: .7; }
 
@@ -468,11 +470,15 @@ function renderPhrasebook() {
   phrases.forEach(p => {
     grid.innerHTML += `
       <div class="phrase-card">
-        <span class="emoji">${p.emoji}</span>
-        <span class="english">${p.english}</span>
-        <span class="tajik">${p.tajik}</span>
-        <span class="roman">${p.romanized}</span>
-        <span class="pronunciation">${p.pronunciation}</span>
+        <div class="card-main">
+          <span class="emoji">${p.emoji}</span>
+          <div class="card-text">
+            <span class="english">${p.english}</span>
+            <span class="tajik">${p.tajik}</span>
+            <span class="roman">${p.romanized}</span>
+          </div>
+        </div>
+        <div class="pronunciation">${p.pronunciation}</div>
       </div>`;
   });
   document.getElementById('phrasebook').appendChild(grid);
