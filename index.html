@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello Traveller — Tajik</title>
+  <title>Hello Traveller</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --red:    #CC0000;
-      --green:  #006600;
       --bg:     #0f1117;
       --card:   #1a1d27;
-      --card2:  #22263a;
       --text:   #e8e8ec;
       --muted:  #7a7f99;
       --border: #2c3050;
@@ -31,14 +28,34 @@
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, var(--red) 0%, #8b0000 100%);
+      background: linear-gradient(135deg, #CC0000 0%, #8b0000 100%);
       color: white;
-      padding: 2rem 1rem 1.5rem;
+      padding: 1.75rem 1rem 1.25rem;
       text-align: center;
     }
-    header .flag { font-size: 2.8rem; margin-bottom: .4rem; }
-    header h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -.5px; }
-    header p  { font-size: .9rem; opacity: .85; margin-top: .25rem; }
+    header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.5px; }
+    header p  { font-size: .85rem; opacity: .8; margin-top: .2rem; }
+
+    /* ── Language picker ── */
+    .lang-picker {
+      display: flex;
+      gap: .5rem;
+      justify-content: center;
+      margin: .9rem 0 .6rem;
+    }
+    .lang-btn {
+      padding: .4rem 1rem;
+      border-radius: 99px;
+      border: 2px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.1);
+      color: white;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .lang-btn.active  { background: rgba(255,255,255,.28); border-color: rgba(255,255,255,.7); }
+    .lang-btn:hover:not(.active) { background: rgba(255,255,255,.18); }
 
     /* ── Nav tabs ── */
     nav {
@@ -61,10 +78,7 @@
       border-bottom: 3px solid transparent;
       transition: color .2s, border-color .2s;
     }
-    nav button.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
+    nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
     nav button:hover:not(.active) { color: var(--text); }
 
     /* ── Views ── */
@@ -72,69 +86,38 @@
     .view.active { display: block; }
 
     /* ── Phrasebook ── */
-    .phrase-grid {
-      display: grid;
-      gap: 1rem;
-    }
+    .phrase-grid { display: grid; gap: 1rem; }
     .phrase-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.1rem 1.25rem 1rem;
     }
-    .card-main {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      margin-bottom: .6rem;
-    }
+    .card-main { display: flex; align-items: center; gap: .75rem; margin-bottom: .6rem; }
     .card-main .emoji { font-size: 1.6rem; flex-shrink: 0; }
     .card-text { display: flex; flex-direction: column; gap: .1rem; }
-    .phrase-card .english {
-      font-size: .78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--muted);
+    .phrase-card .p-english {
+      font-size: .78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--muted);
     }
-    .phrase-card .tajik {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.3;
+    .phrase-card .p-native { font-size: 1.3rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .phrase-card .p-roman  { font-size: .88rem; color: var(--muted); font-style: italic; }
+    .phrase-card .p-pron {
+      font-size: .78rem; color: var(--muted); text-align: center;
+      border-top: 1px solid var(--border); padding-top: .55rem;
     }
-    .phrase-card .roman {
-      font-size: .88rem;
-      color: var(--muted);
-      font-style: italic;
-    }
-    .phrase-card .pronunciation {
-      font-size: .78rem;
-      color: var(--muted);
-      text-align: center;
-      border-top: 1px solid var(--border);
-      padding-top: .55rem;
-    }
-    .phrase-card .pronunciation::before { content: '🔉  '; }
+    .phrase-card .p-pron::before { content: '🔉  '; }
 
-    /* ── Quiz ── */
+    /* ── Quiz setup ── */
     #quiz-setup { text-align: center; padding-top: 1rem; }
     #quiz-setup h2 { font-size: 1.3rem; margin-bottom: .5rem; }
     #quiz-setup p  { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
 
-    .mode-cards {
-      display: grid;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
+    .mode-cards { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
     .mode-card {
-      background: var(--card);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.2rem 1rem;
-      cursor: pointer;
-      transition: border-color .2s, box-shadow .2s;
-      text-align: left;
+      background: var(--card); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem 1rem;
+      cursor: pointer; transition: border-color .2s, box-shadow .2s; text-align: left;
     }
     .mode-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(224,48,48,.15); }
     .mode-card.selected { border-color: var(--accent); background: rgba(224,48,48,.12); }
@@ -142,170 +125,96 @@
     .mode-card p  { font-size: .82rem; color: var(--muted); }
 
     .btn {
-      display: inline-block;
-      padding: .75rem 2rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
+      display: inline-block; padding: .75rem 2rem; border-radius: 8px;
+      font-size: 1rem; font-weight: 700; border: none; cursor: pointer;
       transition: opacity .15s, transform .1s;
     }
     .btn:active { transform: scale(.97); }
     .btn-primary { background: var(--accent); color: white; }
     .btn-primary:hover { opacity: .9; }
-    .btn-outline {
-      background: var(--card);
-      color: var(--text);
-      border: 2px solid var(--border);
-    }
+    .btn-outline { background: var(--card); color: var(--text); border: 2px solid var(--border); }
     .btn-outline:hover { border-color: var(--muted); }
 
-    /* Quiz active */
+    /* ── Quiz active ── */
     #quiz-active { display: none; }
-    .quiz-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.2rem;
-    }
+    .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
     .quiz-progress { font-size: .85rem; color: var(--muted); font-weight: 600; }
     .quiz-score    { font-size: .85rem; font-weight: 700; color: var(--accent); }
-
-    .progress-bar {
-      height: 5px;
-      background: var(--border);
-      border-radius: 99px;
-      margin-bottom: 1.5rem;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 99px;
-      transition: width .3s ease;
-    }
+    .progress-bar  { height: 5px; background: var(--border); border-radius: 99px; margin-bottom: 1.5rem; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s ease; }
 
     /* Flashcard */
     .flashcard {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      min-height: 200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      perspective: 1000px;
-      margin-bottom: 1.2rem;
-      position: relative;
-      transition: box-shadow .2s;
-      user-select: none;
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      min-height: 200px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 2rem 1.5rem; text-align: center; cursor: pointer;
+      margin-bottom: 1.2rem; position: relative; transition: box-shadow .2s; user-select: none;
     }
     .flashcard:hover { box-shadow: 0 4px 20px rgba(0,0,0,.35); }
-    .flashcard .prompt-label {
-      font-size: .72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--muted);
-      margin-bottom: .75rem;
-    }
-    .flashcard .prompt-text {
-      font-size: 1.6rem;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-    .flashcard .reveal-hint {
-      position: absolute;
-      bottom: .75rem;
-      font-size: .75rem;
-      color: var(--muted);
-    }
+    .flashcard .prompt-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .75rem; }
+    .flashcard .prompt-text  { font-size: 1.6rem; font-weight: 700; line-height: 1.3; }
+    .flashcard .reveal-hint  { position: absolute; bottom: .75rem; font-size: .75rem; color: var(--muted); }
     .flashcard .answer { display: none; width: 100%; text-align: center; }
     .flashcard.revealed .reveal-hint { display: none; }
     .flashcard.revealed .answer { display: block; }
-    .flashcard .answer .tajik-big { font-size: 1.9rem; font-weight: 700; margin-bottom: .3rem; }
-    .flashcard .answer .roman-ans { color: var(--muted); font-style: italic; margin-bottom: .2rem; }
-    .flashcard .answer .pron-ans  { font-size: .78rem; color: var(--muted); }
-    .flashcard .answer .divider { border: none; border-top: 1px solid var(--border); margin: .75rem auto; width: 60%; }
+    .flashcard .answer .native-big { font-size: 1.9rem; font-weight: 700; margin-bottom: .3rem; }
+    .flashcard .answer .roman-ans  { color: var(--muted); font-style: italic; margin-bottom: .2rem; }
+    .flashcard .answer .pron-ans   { font-size: .78rem; color: var(--muted); }
+    .flashcard .answer .divider    { border: none; border-top: 1px solid var(--border); margin: .75rem auto; width: 60%; }
 
     .fc-actions { display: none; gap: .75rem; justify-content: center; margin-bottom: 1.5rem; }
     .fc-actions.show { display: flex; }
     .btn-got  { background: var(--correct); color: white; }
-    .btn-got:hover { opacity:.9; }
+    .btn-got:hover { opacity: .9; }
     .btn-miss { background: var(--card); color: var(--wrong); border: 2px solid var(--wrong); }
     .btn-miss:hover { background: rgba(239,68,68,.1); }
 
     /* Multiple choice */
-    .mc-question {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      text-align: center;
-      margin-bottom: 1.2rem;
-    }
+    .mc-question { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; margin-bottom: 1.2rem; }
     .mc-question .direction { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .6rem; }
-    .mc-question .prompt { font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+    .mc-question .prompt    { font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
 
     .mc-options { display: grid; gap: .65rem; margin-bottom: 1.2rem; }
     .mc-option {
-      background: var(--card);
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      padding: .9rem 1rem;
-      font-size: 1.05rem;
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
-      transition: border-color .15s, background .15s;
-      line-height: 1.3;
-      color: var(--text);
+      background: var(--card); border: 2px solid var(--border); border-radius: 10px;
+      padding: .9rem 1rem; font-size: 1.05rem; font-weight: 600; text-align: left;
+      cursor: pointer; transition: border-color .15s, background .15s; line-height: 1.3; color: var(--text);
     }
     .mc-option:hover:not(:disabled) { border-color: var(--accent); background: rgba(224,48,48,.1); }
     .mc-option.correct { border-color: var(--correct); background: rgba(34,197,94,.12); color: var(--correct); }
     .mc-option.wrong   { border-color: var(--wrong);   background: rgba(239,68,68,.12); color: var(--wrong); }
     .mc-option:disabled { cursor: default; }
     .mc-option .sub { font-size: .75rem; font-weight: 400; color: var(--muted); margin-top: .15rem; }
-    .mc-option.correct .sub,
-    .mc-option.wrong .sub { color: inherit; opacity: .7; }
+    .mc-option.correct .sub, .mc-option.wrong .sub { color: inherit; opacity: .7; }
 
-    .feedback-bar {
-      text-align: center;
-      font-weight: 700;
-      font-size: 1rem;
-      min-height: 1.5rem;
-      margin-bottom: 1rem;
-    }
+    .feedback-bar { text-align: center; font-weight: 700; font-size: 1rem; min-height: 1.5rem; margin-bottom: 1rem; }
     .feedback-bar.correct { color: var(--correct); }
     .feedback-bar.wrong   { color: var(--wrong); }
-
     .next-wrap { text-align: center; }
 
     /* Results */
     #quiz-result { display: none; text-align: center; padding: 2rem 1rem; }
-    #quiz-result .big-score { font-size: 3.5rem; font-weight: 800; color: var(--accent); margin: .5rem 0; }
-    #quiz-result p { color: var(--muted); margin-bottom: 1.5rem; }
+    #quiz-result .big-score  { font-size: 3.5rem; font-weight: 800; color: var(--accent); margin: .5rem 0; }
+    #quiz-result p           { color: var(--muted); margin-bottom: 1.5rem; }
     #quiz-result .result-msg { font-size: 1.2rem; font-weight: 600; margin-bottom: .5rem; }
     #quiz-result .result-actions { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
 
     @media (max-width: 480px) {
-      header h1 { font-size: 1.4rem; }
-      .flashcard .prompt-text { font-size: 1.3rem; }
-      .mc-question .prompt { font-size: 1.2rem; }
+      header h1 { font-size: 1.3rem; }
+      .flashcard .prompt-text  { font-size: 1.3rem; }
+      .mc-question .prompt     { font-size: 1.2rem; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="flag">🇹🇯</div>
-  <h1>Hello Traveller — Tajik</h1>
-  <p>Essential phrases for your trip to Tajikistan</p>
+  <h1>Hello Traveller</h1>
+  <div class="lang-picker">
+    <button class="lang-btn active" onclick="switchLang('tajik', this)">🇹🇯 Tajik</button>
+    <button class="lang-btn"        onclick="switchLang('uzbek', this)">🇺🇿 Uzbek</button>
+  </div>
+  <p id="header-sub">Essential phrases for your trip to Tajikistan</p>
 </header>
 
 <nav>
@@ -319,30 +228,26 @@
 <!-- ── QUIZ ── -->
 <div id="quiz" class="view">
 
-  <!-- Setup screen -->
   <div id="quiz-setup">
     <h2>Practice Mode</h2>
     <p>Choose how you'd like to drill the phrases</p>
-
     <div class="mode-cards">
       <div class="mode-card selected" data-mode="flashcard" onclick="selectMode(this)">
         <h3>🃏 Flashcards</h3>
-        <p>See the English phrase, try to recall the Tajik, then flip to check yourself.</p>
+        <p>See the English phrase, try to recall the translation, then flip to check yourself.</p>
       </div>
-      <div class="mode-card" data-mode="mc-en-tj" onclick="selectMode(this)">
-        <h3>🔤 English → Tajik</h3>
-        <p>See an English phrase and pick the correct Tajik from four options.</p>
+      <div class="mode-card" data-mode="mc-en-nat" onclick="selectMode(this)">
+        <h3 id="mc-en-label">🔤 English → Tajik</h3>
+        <p>See an English phrase and pick the correct translation from four options.</p>
       </div>
-      <div class="mode-card" data-mode="mc-tj-en" onclick="selectMode(this)">
-        <h3>🔤 Tajik → English</h3>
-        <p>See a Tajik phrase and pick the correct English meaning.</p>
+      <div class="mode-card" data-mode="mc-nat-en" onclick="selectMode(this)">
+        <h3 id="mc-nat-label">🔤 Tajik → English</h3>
+        <p>See a phrase in the local language and pick the correct English meaning.</p>
       </div>
     </div>
-
     <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
   </div>
 
-  <!-- Active quiz -->
   <div id="quiz-active">
     <div class="quiz-header">
       <span class="quiz-progress" id="q-progress"></span>
@@ -350,7 +255,7 @@
     </div>
     <div class="progress-bar"><div class="progress-fill" id="q-bar"></div></div>
 
-    <!-- Flashcard mode -->
+    <!-- Flashcard -->
     <div id="fc-mode" style="display:none">
       <div class="flashcard" id="fc-card" onclick="revealFlashcard()">
         <div class="prompt-label">English</div>
@@ -358,9 +263,9 @@
         <div class="reveal-hint">tap to reveal</div>
         <div class="answer">
           <hr class="divider">
-          <div class="tajik-big" id="fc-tajik"></div>
-          <div class="roman-ans" id="fc-roman"></div>
-          <div class="pron-ans"  id="fc-pron"></div>
+          <div class="native-big" id="fc-native"></div>
+          <div class="roman-ans"  id="fc-roman"></div>
+          <div class="pron-ans"   id="fc-pron"></div>
         </div>
       </div>
       <div class="fc-actions" id="fc-actions">
@@ -369,11 +274,11 @@
       </div>
     </div>
 
-    <!-- Multiple choice mode -->
+    <!-- Multiple choice -->
     <div id="mc-mode" style="display:none">
       <div class="mc-question">
         <div class="direction" id="mc-direction"></div>
-        <div class="prompt" id="mc-prompt"></div>
+        <div class="prompt"    id="mc-prompt"></div>
       </div>
       <div class="mc-options" id="mc-options"></div>
       <div class="feedback-bar" id="mc-feedback"></div>
@@ -383,11 +288,10 @@
     </div>
   </div>
 
-  <!-- Results -->
   <div id="quiz-result">
-    <div class="flag" style="font-size:3rem">🎉</div>
+    <div style="font-size:3rem">🎉</div>
     <div class="result-msg" id="result-msg"></div>
-    <div class="big-score" id="result-score"></div>
+    <div class="big-score"  id="result-score"></div>
     <p id="result-sub"></p>
     <div class="result-actions">
       <button class="btn btn-outline" onclick="backToSetup()">← Change mode</button>
@@ -397,102 +301,87 @@
 </div>
 
 <script>
-const phrases = [
-  {
-    english: "Hello",
-    tajik: "Салом",
-    romanized: "Salom",
-    pronunciation: "SAH-lom",
-    emoji: "👋"
+const languages = {
+  tajik: {
+    name: "Tajik",
+    country: "Tajikistan",
+    flag: "🇹🇯",
+    hasRoman: true,
+    phrases: [
+      { english: "Hello",                      native: "Салом",                     romanized: "Salom",                 pronunciation: "SAH-lom",                       emoji: "👋" },
+      { english: "Goodbye",                    native: "Хайр",                      romanized: "Xayr",                  pronunciation: "KHAY-r",                        emoji: "✋" },
+      { english: "Thank you",                  native: "Ташаккур",                  romanized: "Tashakkur",             pronunciation: "ta-SHA-kur",                    emoji: "🙏" },
+      { english: "Excuse me",                  native: "Бубахшед",                  romanized: "Bubaxshed",             pronunciation: "boo-bakh-SHED",                 emoji: "🙋" },
+      { english: "Sorry",                      native: "Мебахшед",                  romanized: "Mebaxshed",             pronunciation: "me-bakh-SHED",                  emoji: "😔" },
+      { english: "I don't speak Tajik",        native: "Ман тоҷикӣ намедонам",      romanized: "Man tojikī namedonam",  pronunciation: "man to-ji-KI na-me-DO-nam",     emoji: "🗣️" },
+      { english: "I would like…",              native: "Ман мехоҳам…",              romanized: "Man mexoham…",          pronunciation: "man me-KHOH-ham",               emoji: "🛒" },
+      { english: "This one",                   native: "Ҳамин",                     romanized: "Hamin",                 pronunciation: "ha-MIN",                        emoji: "👆" },
+      { english: "I'm from the Netherlands",   native: "Ман аз Ҳолландия ҳастам",   romanized: "Man az Hollandiya hastam", pronunciation: "man az hol-LAN-di-ya HAS-tam", emoji: "🇳🇱" },
+      { english: "It was delicious",           native: "Хушмаза буд",               romanized: "Xushmaza bud",          pronunciation: "khush-MA-za bud",               emoji: "😋" },
+      { english: "Check, please",              native: "Ҳисоб, илтимос",            romanized: "Hisob, iltimos",        pronunciation: "hi-SOB il-ti-MOS",              emoji: "🧾" },
+    ]
   },
-  {
-    english: "Goodbye",
-    tajik: "Хайр",
-    romanized: "Xayr",
-    pronunciation: "KHAY-r",
-    emoji: "✋"
-  },
-  {
-    english: "Thank you",
-    tajik: "Ташаккур",
-    romanized: "Tashakkur",
-    pronunciation: "ta-SHA-kur",
-    emoji: "🙏"
-  },
-  {
-    english: "Excuse me",
-    tajik: "Бубахшед",
-    romanized: "Bubaxshed",
-    pronunciation: "boo-bakh-SHED",
-    emoji: "🙋"
-  },
-  {
-    english: "Sorry",
-    tajik: "Мебахшед",
-    romanized: "Mebaxshed",
-    pronunciation: "me-bakh-SHED",
-    emoji: "😔"
-  },
-  {
-    english: "I don't speak Tajik",
-    tajik: "Ман тоҷикӣ намедонам",
-    romanized: "Man tojikī namedonam",
-    pronunciation: "man to-ji-KI na-me-DO-nam",
-    emoji: "🗣️"
-  },
-  {
-    english: "I would like…",
-    tajik: "Ман мехоҳам…",
-    romanized: "Man mexoham…",
-    pronunciation: "man me-KHOH-ham",
-    emoji: "🛒"
-  },
-  {
-    english: "This one",
-    tajik: "Ҳамин",
-    romanized: "Hamin",
-    pronunciation: "ha-MIN",
-    emoji: "👆"
-  },
-  {
-    english: "I'm from the Netherlands",
-    tajik: "Ман аз Ҳолландия ҳастам",
-    romanized: "Man az Hollandiya hastam",
-    pronunciation: "man az hol-LAN-di-ya HAS-tam",
-    emoji: "🇳🇱"
-  },
-  {
-    english: "It was delicious",
-    tajik: "Хушмаза буд",
-    romanized: "Xushmaza bud",
-    pronunciation: "khush-MA-za bud",
-    emoji: "😋"
-  },
-  {
-    english: "Check, please",
-    tajik: "Ҳисоб, илтимос",
-    romanized: "Hisob, iltimos",
-    pronunciation: "hi-SOB il-ti-MOS",
-    emoji: "🧾"
+  uzbek: {
+    name: "Uzbek",
+    country: "Uzbekistan",
+    flag: "🇺🇿",
+    hasRoman: false,
+    phrases: [
+      { english: "Hello",                      native: "Salom",                     romanized: "",  pronunciation: "SAH-lom",                       emoji: "👋" },
+      { english: "Goodbye",                    native: "Xayr",                      romanized: "",  pronunciation: "KHAY-r",                        emoji: "✋" },
+      { english: "Thank you",                  native: "Rahmat",                    romanized: "",  pronunciation: "rah-MAT",                       emoji: "🙏" },
+      { english: "Excuse me",                  native: "Kechirasiz",                romanized: "",  pronunciation: "ke-chi-RA-siz",                 emoji: "🙋" },
+      { english: "Sorry",                      native: "Uzr",                       romanized: "",  pronunciation: "OO-zr",                         emoji: "😔" },
+      { english: "I don't speak Uzbek",        native: "Men o'zbekcha bilmayman",   romanized: "",  pronunciation: "men oz-BEK-cha bil-MAY-man",    emoji: "🗣️" },
+      { english: "I would like…",              native: "Men … xohlayman",           romanized: "",  pronunciation: "men … khoh-LAY-man",            emoji: "🛒" },
+      { english: "This one",                   native: "Mana bu",                   romanized: "",  pronunciation: "MA-na boo",                     emoji: "👆" },
+      { english: "I'm from the Netherlands",   native: "Men Niderlandiyalikman",    romanized: "",  pronunciation: "men ni-der-LAN-di-ya-LIK-man",  emoji: "🇳🇱" },
+      { english: "It was delicious",           native: "Juda mazali edi",           romanized: "",  pronunciation: "JU-da ma-ZA-li e-DI",           emoji: "😋" },
+      { english: "Check, please",              native: "Hisob, iltimos",            romanized: "",  pronunciation: "hi-SOB il-ti-MOS",              emoji: "🧾" },
+    ]
   }
-];
+};
+
+let currentLang = 'tajik';
+
+function switchLang(key, btn) {
+  currentLang = key;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const lang = languages[key];
+  document.getElementById('header-sub').textContent = `Essential phrases for your trip to ${lang.country}`;
+  document.getElementById('mc-en-label').textContent  = `🔤 English → ${lang.name}`;
+  document.getElementById('mc-nat-label').textContent = `🔤 ${lang.name} → English`;
+
+  // Re-render phrasebook
+  const pb = document.getElementById('phrasebook');
+  pb.innerHTML = '';
+  renderPhrasebook();
+
+  // Reset quiz to setup
+  backToSetup();
+}
 
 // ── Phrasebook ──
 function renderPhrasebook() {
+  const lang = languages[currentLang];
   const grid = document.createElement('div');
   grid.className = 'phrase-grid';
-  phrases.forEach(p => {
+  lang.phrases.forEach(p => {
+    const romanRow = (lang.hasRoman && p.romanized)
+      ? `<span class="p-roman">${p.romanized}</span>` : '';
     grid.innerHTML += `
       <div class="phrase-card">
         <div class="card-main">
           <span class="emoji">${p.emoji}</span>
           <div class="card-text">
-            <span class="english">${p.english}</span>
-            <span class="tajik">${p.tajik}</span>
-            <span class="roman">${p.romanized}</span>
+            <span class="p-english">${p.english}</span>
+            <span class="p-native">${p.native}</span>
+            ${romanRow}
           </div>
         </div>
-        <div class="pronunciation">${p.pronunciation}</div>
+        <div class="p-pron">${p.pronunciation}</div>
       </div>`;
   });
   document.getElementById('phrasebook').appendChild(grid);
@@ -529,12 +418,12 @@ function shuffle(arr) {
 }
 
 function startQuiz() {
-  queue  = shuffle(phrases);
+  queue  = shuffle(languages[currentLang].phrases);
   qIndex = 0;
   score  = 0;
   document.getElementById('quiz-setup').style.display  = 'none';
-  document.getElementById('quiz-result').style.display  = 'none';
-  document.getElementById('quiz-active').style.display  = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
   showQuestion();
 }
 
@@ -547,22 +436,22 @@ function updateHeader() {
 
 function showQuestion() {
   updateHeader();
-  const isMC = quizMode === 'mc-en-tj' || quizMode === 'mc-tj-en';
+  const isMC = quizMode === 'mc-en-nat' || quizMode === 'mc-nat-en';
   document.getElementById('fc-mode').style.display = isMC ? 'none' : 'block';
   document.getElementById('mc-mode').style.display = isMC ? 'block' : 'none';
-
   if (!isMC) showFlashcard();
   else        showMC();
 }
 
 // ── Flashcard ──
 function showFlashcard() {
-  const p = queue[qIndex];
+  const p    = queue[qIndex];
+  const lang = languages[currentLang];
   const card = document.getElementById('fc-card');
   card.classList.remove('revealed');
   document.getElementById('fc-english').textContent = `${p.emoji}  ${p.english}`;
-  document.getElementById('fc-tajik').textContent   = p.tajik;
-  document.getElementById('fc-roman').textContent   = p.romanized;
+  document.getElementById('fc-native').textContent  = p.native;
+  document.getElementById('fc-roman').textContent   = (lang.hasRoman && p.romanized) ? p.romanized : '';
   document.getElementById('fc-pron').textContent    = p.pronunciation;
   document.getElementById('fc-actions').classList.remove('show');
 }
@@ -583,16 +472,25 @@ function markFlashcard(correct) {
 
 // ── Multiple choice ──
 function showMC() {
-  const p = queue[qIndex];
-  const isTJ = quizMode === 'mc-tj-en';
+  const p      = queue[qIndex];
+  const lang   = languages[currentLang];
+  const isNatEn = quizMode === 'mc-nat-en';
+  const allPhrases = languages[currentLang].phrases;
 
-  document.getElementById('mc-direction').textContent = isTJ ? 'What does this mean?' : 'How do you say…';
-  document.getElementById('mc-prompt').textContent    = isTJ ? `${p.tajik}  (${p.romanized})` : `${p.emoji}  ${p.english}`;
-  document.getElementById('mc-feedback').textContent  = '';
-  document.getElementById('mc-feedback').className    = 'feedback-bar';
-  document.getElementById('mc-next').style.display    = 'none';
+  document.getElementById('mc-direction').textContent = isNatEn ? 'What does this mean?' : 'How do you say…';
 
-  const distractors = shuffle(phrases.filter(x => x !== p)).slice(0, 3);
+  if (isNatEn) {
+    const hint = (lang.hasRoman && p.romanized) ? `  (${p.romanized})` : '';
+    document.getElementById('mc-prompt').textContent = `${p.native}${hint}`;
+  } else {
+    document.getElementById('mc-prompt').textContent = `${p.emoji}  ${p.english}`;
+  }
+
+  document.getElementById('mc-feedback').textContent = '';
+  document.getElementById('mc-feedback').className   = 'feedback-bar';
+  document.getElementById('mc-next').style.display   = 'none';
+
+  const distractors = shuffle(allPhrases.filter(x => x !== p)).slice(0, 3);
   const options     = shuffle([p, ...distractors]);
   const container   = document.getElementById('mc-options');
   container.innerHTML = '';
@@ -600,10 +498,11 @@ function showMC() {
   options.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'mc-option';
-    if (isTJ) {
-      btn.innerHTML = opt.english;
+    if (isNatEn) {
+      btn.textContent = opt.english;
     } else {
-      btn.innerHTML = `${opt.tajik}<div class="sub">${opt.romanized}</div>`;
+      const sub = (lang.hasRoman && opt.romanized) ? `<div class="sub">${opt.romanized}</div>` : '';
+      btn.innerHTML = `${opt.native}${sub}`;
     }
     btn.onclick = () => checkMC(btn, opt === p, p);
     container.appendChild(btn);
@@ -611,22 +510,25 @@ function showMC() {
 }
 
 function checkMC(btn, isCorrect, correct) {
+  const lang = languages[currentLang];
   document.querySelectorAll('.mc-option').forEach(b => { b.disabled = true; });
   const fb = document.getElementById('mc-feedback');
 
   if (isCorrect) {
     btn.classList.add('correct');
-    fb.textContent  = '✓ Correct!';
-    fb.className    = 'feedback-bar correct';
+    fb.textContent = '✓ Correct!';
+    fb.className   = 'feedback-bar correct';
     score++;
   } else {
     btn.classList.add('wrong');
-    fb.textContent = `✗  The answer was: ${quizMode === 'mc-tj-en' ? correct.english : correct.tajik}`;
+    const answer = quizMode === 'mc-nat-en' ? correct.english : correct.native;
+    fb.textContent = `✗  The answer was: ${answer}`;
     fb.className   = 'feedback-bar wrong';
-    // highlight the correct one
     document.querySelectorAll('.mc-option').forEach(b => {
-      const label = quizMode === 'mc-tj-en' ? b.textContent.trim() : b.querySelector('.sub')?.textContent.trim();
-      const match = quizMode === 'mc-tj-en' ? label === correct.english : b.textContent.includes(correct.tajik);
+      const isNatEn = quizMode === 'mc-nat-en';
+      const match = isNatEn
+        ? b.textContent.trim() === correct.english
+        : b.textContent.includes(correct.native);
       if (match) b.classList.add('correct');
     });
   }
@@ -653,8 +555,8 @@ function showResult() {
   document.getElementById('result-sub').textContent   = `${pct}% correct`;
 
   const msg = pct === 100 ? '🌟 Perfect score!' :
-              pct >= 70  ? '👍 Great work!' :
-              pct >= 40  ? '📚 Keep practising!' : '💪 Don\'t give up!';
+              pct >= 70   ? '👍 Great work!'     :
+              pct >= 40   ? '📚 Keep practising!' : '💪 Don\'t give up!';
   document.getElementById('result-msg').textContent = msg;
 }
 
