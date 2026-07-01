@@ -211,8 +211,9 @@
 <header>
   <h1>Hello Traveller</h1>
   <div class="lang-picker">
-    <button class="lang-btn active" onclick="switchLang('tajik', this)">🇹🇯 Tajik</button>
-    <button class="lang-btn"        onclick="switchLang('uzbek', this)">🇺🇿 Uzbek</button>
+    <button class="lang-btn active" onclick="switchLang('tajik',   this)">🇹🇯 Tajik</button>
+    <button class="lang-btn"        onclick="switchLang('uzbek',   this)">🇺🇿 Uzbek</button>
+    <button class="lang-btn"        onclick="switchLang('turkish', this)">🇹🇷 Turkish</button>
   </div>
   <p id="header-sub">Essential phrases for your trip to Tajikistan</p>
 </header>
@@ -338,6 +339,25 @@ const languages = {
       { english: "I'm from the Netherlands",   native: "Men Niderlandiyalikman",    romanized: "",  pronunciation: "men ni-der-LAN-di-ya-LIK-man",  emoji: "🇳🇱" },
       { english: "It was delicious",           native: "Juda mazali edi",           romanized: "",  pronunciation: "JU-da ma-ZA-li e-DI",           emoji: "😋" },
       { english: "Check, please",              native: "Hisob, iltimos",            romanized: "",  pronunciation: "hi-SOB il-ti-MOS",              emoji: "🧾" },
+    ]
+  },
+  turkish: {
+    name: "Turkish",
+    country: "Turkey",
+    flag: "🇹🇷",
+    hasRoman: false,
+    phrases: [
+      { english: "Hello",                      native: "Merhaba",                   romanized: "",  pronunciation: "mer-HA-ba",                     emoji: "👋" },
+      { english: "Goodbye",                    native: "Hoşçakal",                  romanized: "",  pronunciation: "HOSH-cha-kal",                  emoji: "✋" },
+      { english: "Thank you",                  native: "Teşekkür ederim",           romanized: "",  pronunciation: "te-shek-KUR e-de-RIM",          emoji: "🙏" },
+      { english: "Excuse me",                  native: "Affedersiniz",              romanized: "",  pronunciation: "af-fe-DER-si-niz",              emoji: "🙋" },
+      { english: "Sorry",                      native: "Özür dilerim",              romanized: "",  pronunciation: "ö-ZUR di-le-RIM",               emoji: "😔" },
+      { english: "I don't speak Turkish",      native: "Türkçe bilmiyorum",         romanized: "",  pronunciation: "TURK-che bil-mi-YO-rum",        emoji: "🗣️" },
+      { english: "I would like…",              native: "… istiyorum",               romanized: "",  pronunciation: "… is-ti-YO-rum",                emoji: "🛒" },
+      { english: "This one",                   native: "Bunu istiyorum",            romanized: "",  pronunciation: "BOO-noo is-ti-YO-rum",          emoji: "👆" },
+      { english: "I'm from the Netherlands",   native: "Hollandalıyım",             romanized: "",  pronunciation: "hol-LAN-da-li-yim",             emoji: "🇳🇱" },
+      { english: "It was delicious",           native: "Çok lezzetliydi",           romanized: "",  pronunciation: "chok lez-ZET-li-di",            emoji: "😋" },
+      { english: "Check, please",              native: "Hesap, lütfen",             romanized: "",  pronunciation: "he-SAP lut-FEN",                emoji: "🧾" },
     ]
   }
 };
